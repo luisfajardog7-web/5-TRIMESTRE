@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href= "assets/img/favicon.png" type="image/x_icon">
+    <!--link  to the external css file -->
+    <link rel="stylesheet" href="assets/css/style.css">
+
+    <title>Cambiar Contraseña</title>
+</head>
+<body>
+    <!--Prelouder-->
+    <div class="preloader" id="preloader">
+    <div class="spinner">Cargandooo...</div>
+</div>
+
+    <!--Header-->
+    <header>
+        <h1>Cambiar Contraseña</h1>
+        <button class="toggle-button" id="toggle-button">☰</button>
+        <nav>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+        <div class="login-container">
+        <form action="/reset-password" method="POST">
+            <div class="validation-message" id="validation-message"></div>
+
+            <label for="reset-email">Correo asociado a la cuenta</label>
+            <input type="email" id="reset-email" name="email" placeholder="tucorreo@ejemplo.com" required>
+
+            <label for="new-password">Nueva contraseña</label>
+            <input type="password" id="new-password" name="password"
+                pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$"
+                title="Mínimo una mayúscula, una minúscula y un número" placeholder="Password" required>
+
+            <label for="confirm-password">Confirmar contraseña</label>
+            <input type="password" id="confirm-password" name="confirm_password">
+
+            <button type="submit">Cambiar contraseña</button>
+            <p style="text-align:center; margin-top:1rem;">
+                <a href="index.html">← Volver al login</a>
+            </p>
+        </form>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Your Company. All rights reserved.</p>
+    </footer>
+
+    <script src="assets/js/main.js"></script>
+</body>
+</html>
