@@ -1,0 +1,7 @@
+# Use this workspace to collaborate
+workspace:
+  id: adf607d8-6298-40f9-9da4-5886f589d99a
+
+localResources:
+  collections:
+    - ../PQRS.postman_collection.json
