@@ -1,13 +1,13 @@
 // src/middlewares/permission.middleware.js
-const { Module, Permission, ModuleRoleUser } = require('../models');
+const { Module, Permission, RoleModulePermission, UserRole } = require('../models');
 const { fail } = require('../utils/response');
 
 /**
  * Middleware factory.
- * Uso: router.post('/', authRequired, permissionRequired('Usuarios', 'create'), handler)
+ * Uso: router.get('/x', authRequired, permissionRequired('PQRS', 'view'), handler)
  *
- * Requiere que `authRequired` haya corrido antes para tener req.auth.user_role_id.
- * Verifica que el user_role activo tenga el (module, permission) en module_role_user.
+ * El token trae user_role_id; role_module_permission trabaja con role_id.
+ * Por eso primero resolvemos el role_id activo y luego verificamos el grant.
  */
 function permissionRequired(moduleName, permissionName) {
   return async (req, res, next) => {
@@ -17,7 +17,16 @@ function permissionRequired(moduleName, permissionName) {
         return fail(res, 'No hay rol activo en el token', 401);
       }
 
-      // 1. Resolver module y permission por nombre
+      // 1) user_role_id (token) → role_id (tabla nueva)
+      const activeRole = await UserRole.findOne({
+        where: { id: user_role_id, status_id: 1 },
+        attributes: ['role_id'],
+      });
+      if (!activeRole) {
+        return fail(res, 'El rol activo del token ya no es válido', 401);
+      }
+
+      // 2) Resolver módulo y permiso por nombre
       const [mod, perm] = await Promise.all([
         Module.findOne({ where: { name: moduleName, is_active: 1 }, attributes: ['id', 'name'] }),
         Permission.findOne({ where: { name: permissionName }, attributes: ['id', 'name'] }),
@@ -26,10 +35,10 @@ function permissionRequired(moduleName, permissionName) {
       if (!mod) return fail(res, `Módulo "${moduleName}" no existe o está inactivo`, 500);
       if (!perm) return fail(res, `Permiso "${permissionName}" no existe`, 500);
 
-      // 2. Verificar asignación
-      const grant = await ModuleRoleUser.findOne({
+      // 3) Verificar asignación en role_module_permission
+      const grant = await RoleModulePermission.findOne({
         where: {
-          user_role_id,
+          role_id: activeRole.role_id,
           module_id: mod.id,
           permission_id: perm.id,
         },
@@ -44,8 +53,8 @@ function permissionRequired(moduleName, permissionName) {
         );
       }
 
-      // Adjuntar para inspección si algún controlador lo necesita
       req.permissionContext = {
+        role_id: activeRole.role_id,
         module_id: mod.id,
         module_name: mod.name,
         permission_id: perm.id,
