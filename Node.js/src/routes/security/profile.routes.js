@@ -1,10 +1,10 @@
-// src/routes/profile.routes.js
+// src/routes/security/profile.routes.js
 const { Router } = require('express');
-const { authRequired } = require('../middlewares/auth.middleware');
-const { permissionRequired } = require('../middlewares/permission.middleware');
-const { validate } = require('../middlewares/validate.middleware');
-const { updateProfileSchema } = require('../validators/profile.validator');
-const ctl = require('../controllers/security/profile.controller');
+const { authRequired } = require('../../middlewares/auth.middleware');
+const { permissionRequired } = require('../../middlewares/permission.middleware');
+const { validate } = require('../../middlewares/validate.middleware');
+const { updateProfileSchema } = require('../../validators/profile.validator');
+const ctl = require('../../controllers/security/profile.controller');
 
 const router = Router();
 

@@ -3,5 +3,6 @@ module.exports = {
   catalog: require('./catalog.controller'),
   role: require('./role.controller'),
   user: require('./user.controller'),
-  profile: require('./profile.controller'),   // ← NUEVO
+  profile: require('./profile.controller'),
+  module: require('./module.controller'),   // ← NUEVO
 };

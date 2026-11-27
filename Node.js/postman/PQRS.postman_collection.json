@@ -9,7 +9,8 @@
     { "key": "roleId", "value": "6" },
     { "key": "rmpId", "value": "" },
     { "key": "newUserId", "value": "" },
-    { "key": "urId", "value": "" }
+    { "key": "urId", "value": "" },
+    { "key": "moduleId", "value": "" }
   ],
   "item": [
     {
@@ -358,6 +359,111 @@
             "method": "GET",
             "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
             "url": "{{baseUrl}}/profiles"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Modules",
+      "item": [
+        {
+          "name": "Listar módulos",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{baseUrl}}/modules"
+          }
+        },
+        {
+          "name": "Listar solo activos",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{baseUrl}}/modules?is_active=1"
+          }
+        },
+        {
+          "name": "Detalle módulo 5 (PQRS)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{baseUrl}}/modules/5"
+          }
+        },
+        {
+          "name": "Crear módulo Reportes",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"Reportes\",\n  \"route\": \"#/reports\",\n  \"icon\": \"bi-graph-up\",\n  \"description\": \"Reportes del sistema\"\n}" },
+            "url": "{{baseUrl}}/modules"
+          },
+          "event": [{ "listen": "test", "script": { "exec": [
+            "const b = pm.response.json();",
+            "if (b.data && b.data.module && b.data.module.id) pm.collectionVariables.set('moduleId', String(b.data.module.id));"
+          ]}}]
+        },
+        {
+          "name": "Crear duplicado name -> 409",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": { "mode": "raw", "raw": "{\"name\":\"Reportes\",\"route\":\"#/reports2\"}" },
+            "url": "{{baseUrl}}/modules"
+          }
+        },
+        {
+          "name": "Crear duplicado route -> 409",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": { "mode": "raw", "raw": "{\"name\":\"Reportes2\",\"route\":\"#/reports\"}" },
+            "url": "{{baseUrl}}/modules"
+          }
+        },
+        {
+          "name": "Editar módulo Reportes",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": { "mode": "raw", "raw": "{\"description\":\"Reportes v2\"}" },
+            "url": "{{baseUrl}}/modules/{{moduleId}}"
+          }
+        },
+        {
+          "name": "Eliminar módulo Reportes",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{baseUrl}}/modules/{{moduleId}}"
+          }
+        },
+        {
+          "name": "Eliminar módulo PQRS (con permisos) -> 409",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{baseUrl}}/modules/5"
+          }
+        },
+        {
+          "name": "juan intenta listar módulos -> 403",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{baseUrl}}/modules"
           }
         }
       ]
