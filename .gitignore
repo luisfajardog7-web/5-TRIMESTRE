@@ -1,0 +1,18 @@
+# Secretos y dependencias
+.env
+.env.local
+!.env.example
+node_modules/
+vendor/
+.git/
+.vs/
+
+# Respaldos y bases de datos
+*.sql
+*.db
+*.db-shm
+*.db-wal
+
+# Sistema
+Thumbs.db
+.DS_Store
