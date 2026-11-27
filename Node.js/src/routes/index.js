@@ -2,6 +2,7 @@
 const { Router } = require('express');
 const authRoutes = require('./auth.routes');
 const security = require('./security');
+const pqrsRoutes = require('../controllers/pqrs/pqrs.routes');
 
 const router = Router();
 
@@ -15,5 +16,6 @@ router.use('/roles', security.role);
 router.use('/users', security.user);
 router.use('/profiles', security.profile);
 router.use('/modules', security.module);
+router.use('/pqrs', pqrsRoutes);                    // ← NUEVO
 
 module.exports = router;
