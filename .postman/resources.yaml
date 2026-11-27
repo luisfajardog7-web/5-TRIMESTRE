@@ -1,0 +1,7 @@
+# Use this workspace to collaborate
+workspace:
+  id: 61c6f43e-b391-4d8d-85c0-fa2bcd2d256c
+
+localResources:
+  collections:
+    - ../Node.js/postman/PQRS.postman_collection.json

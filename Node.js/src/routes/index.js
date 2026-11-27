@@ -2,6 +2,9 @@
 const { Router } = require('express');
 const authRoutes = require('./auth.routes');
 const catalogRoutes = require('./catalog.routes');
+const roleRoutes = require('./role.routes');
+const userRoutes = require('./user.routes');
+const profileRoutes = require('./profile.routes');
 
 const router = Router();
 
@@ -10,6 +13,9 @@ router.get('/health', (req, res) => {
 });
 
 router.use('/auth', authRoutes);
-router.use('/catalogs', catalogRoutes);   // ← NUEVO
+router.use('/catalogs', catalogRoutes);
+router.use('/roles', roleRoutes);
+router.use('/users', userRoutes);
+router.use('/profiles', profileRoutes);
 
 module.exports = router;
